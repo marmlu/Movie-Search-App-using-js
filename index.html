@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Movie Search App</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header>
+      <h1>
+        Movie Search
+        <i class="fa-solid fa-film"></i>
+      </h1>
+    </header>
+    <main>
+      <form class="container" id="search-form">
+        <input
+          class="movie-search-input"
+          id="movie-input"
+          type="text"
+          placeholder="Search for a movie..."
+          aria-label="Enter a movie title"
+        />
+
+        <button class="movie-search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Search
+        </button>
+      </form>
+
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+
+      <section class="card-container">
+        <h2 class="search-result">Search Results</h2>
+
+        <div class="cards" id="movie-results">
+          <article class="card">
+            <img
+              src="https://placehold.co/300x450?text=Movie+Poster"
+              alt="Movie poster placeholder"
+            />
+            <div class="card-info">
+              <h3 id="movie-name">Movie Name</h3>
+              <p>Year: 2010</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              src="https://placehold.co/300x450?text=Movie+Poster"
+              alt="Movie poster placeholder"
+            />
+            <div class="card-info">
+              <h3>Movie Name</h3>
+              <p>Year: 2024</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
