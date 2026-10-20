@@ -1,17 +1,16 @@
 const searchInput = document.getElementById("movie-input");
 const movieName = document.querySelector(".card h3");
 const movieSearchBtn = document.querySelector(".movie-search-btn");
+const movieResult = document.querySelector(".cards");
 const searchForm = document.getElementById("search-form");
-const moviePoster = document.querySelector(".card img");
-const movieYear = document.querySelector(".card-info p");
+
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
+  const storedMovie = searchInput.value.trim();
   if (searchInput.value.trim() === "") {
     alert("Please enter a movie title");
   } else {
-    const storedMove = searchInput.value.trim();
-    movieName.textContent = searchInput.value.trim();
-    getMovieInfo(storedMove);
+    getMovieInfo(storedMovie);
   }
 });
 async function getMovieInfo(movieName) {
@@ -21,16 +20,34 @@ async function getMovieInfo(movieName) {
     );
     if (response.ok) {
       const movie = await response.json();
+      movieResult.innerHTML = "";
       if (movie.Response === "False") {
         alert(movie.Error);
         return;
       }
-      if (movie.Search[0].Poster === "N/A") {
-        moviePoster.src = "https://placehold.co/300x450?text=No+Poster";
-      } else {
-        moviePoster.src = movie.Search[0].Poster;
+      for (let i = 0; i < movie.Search.length; i++) {
+        const cardContainer = document.createElement("article");
+        const posterMovie = document.createElement("img");
+        const nameMovie = document.createElement("h3");
+        const yearMovie = document.createElement("p");
+
+        nameMovie.textContent = movie.Search[i].Title;
+
+        if (movie.Search[i].Poster === "N/A") {
+          posterMovie.src = "https://placehold.co/300x450?text=No+Poster";
+        } else {
+          posterMovie.src = movie.Search[i].Poster;
+        }
+        yearMovie.textContent = `Year: ${movie.Search[i].Year}`;
+        nameMovie.classList.add("card-info");
+        yearMovie.classList.add("card-info");
+        cardContainer.classList.add("card");
+        cardContainer.appendChild(posterMovie);
+        cardContainer.appendChild(nameMovie);
+        cardContainer.appendChild(yearMovie);
+
+        movieResult.appendChild(cardContainer);
       }
-      movieYear.textContent = `Year: ${movie.Search[0].Year}`;
     } else {
       alert(`Request failed. Status: ${response.status}`);
     }
