@@ -91,6 +91,8 @@ header h1 i {
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 10px;
   background-color: aquamarine;
@@ -110,7 +112,7 @@ header h1 i {
 }
 
 .card-info {
-  padding: 12px;
+  padding: 6px;
 }
 
 .card-info h3 {
