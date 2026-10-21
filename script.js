@@ -3,13 +3,16 @@ const movieName = document.querySelector(".card h3");
 const movieSearchBtn = document.querySelector(".movie-search-btn");
 const movieResult = document.querySelector(".cards");
 const searchForm = document.getElementById("search-form");
-
+const message = document.getElementById("message");
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const storedMovie = searchInput.value.trim();
+
   if (searchInput.value.trim() === "") {
-    alert("Please enter a movie title");
+    message.textContent = "Please enter a movie title";
   } else {
+    message.textContent = "Searching for movies...";
+    movieSearchBtn.disabled = true;
     getMovieInfo(storedMovie);
   }
 });
@@ -22,7 +25,7 @@ async function getMovieInfo(movieName) {
       const movie = await response.json();
       movieResult.innerHTML = "";
       if (movie.Response === "False") {
-        alert(movie.Error);
+        message.textContent = movie.Error;
         return;
       }
       for (let i = 0; i < movie.Search.length; i++) {
@@ -48,10 +51,13 @@ async function getMovieInfo(movieName) {
 
         movieResult.appendChild(cardContainer);
       }
+      message.textContent = `Found ${movie.Search.length} movies.`;
     } else {
-      alert(`Request failed. Status: ${response.status}`);
+      message.textContent = `Request failed. Status: ${response.status}`;
     }
   } catch {
-    alert("Network failure");
+    message.textContent = "Network failure";
+  } finally {
+    movieSearchBtn.disabled = false;
   }
 }
