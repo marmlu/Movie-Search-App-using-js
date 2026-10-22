@@ -1,9 +1,13 @@
 const searchInput = document.getElementById("movie-input");
-const movieName = document.querySelector(".card h3");
 const movieSearchBtn = document.querySelector(".movie-search-btn");
 const movieResult = document.querySelector(".cards");
 const searchForm = document.getElementById("search-form");
 const message = document.getElementById("message");
+const searchHistoryContainer = document.getElementById(
+  "search-history-container",
+);
+const movieHistory = JSON.parse(localStorage.getItem("movieHistory")) || [];
+displayMovieHistory();
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const storedMovie = searchInput.value.trim();
@@ -48,10 +52,15 @@ async function getMovieInfo(movieName) {
         cardContainer.appendChild(posterMovie);
         cardContainer.appendChild(nameMovie);
         cardContainer.appendChild(yearMovie);
-
         movieResult.appendChild(cardContainer);
       }
       message.textContent = `Found ${movie.Search.length} movies.`;
+      if (!movieHistory.includes(movieName.toLowerCase())) {
+        movieHistory.push(movieName.toLowerCase());
+
+        localStorage.setItem("movieHistory", JSON.stringify(movieHistory));
+        displayMovieHistory();
+      }
     } else {
       message.textContent = `Request failed. Status: ${response.status}`;
     }
@@ -60,4 +69,22 @@ async function getMovieInfo(movieName) {
   } finally {
     movieSearchBtn.disabled = false;
   }
+}
+function displayMovieHistory() {
+  searchHistoryContainer.innerHTML = "";
+  movieHistory.forEach(function (movie) {
+    const movieNameButton = document.createElement("button");
+    movieNameButton.textContent = movie;
+    movieNameButton.classList.add("movie-search-btn");
+    movieNameButton.style.backgroundColor = "green";
+    movieNameButton.style.padding = "8px";
+    searchHistoryContainer.style.display = "flex";
+    searchHistoryContainer.style.gap = "10px";
+    searchHistoryContainer.style.marginTop = "10px";
+    searchHistoryContainer.appendChild(movieNameButton);
+    movieNameButton.addEventListener("click", function () {
+      searchInput.value = movie;
+      getMovieInfo(movie);
+    });
+  });
 }
