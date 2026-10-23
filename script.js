@@ -98,7 +98,11 @@ function displayMovieHistory() {
     searchHistoryContainer.appendChild(movieNameButton);
     movieNameButton.addEventListener("click", function () {
       searchInput.value = movie;
-      getMovieInfo(movie);
+      if (movieCache.has(movie)) {
+        fetchFromCache(movie);
+      } else {
+        getMovieInfo(movie);
+      }
     });
   });
 }
