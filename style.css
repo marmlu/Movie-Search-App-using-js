@@ -48,10 +48,20 @@ header h1 i {
 }
 
 .movie-search-btn {
-  padding: 12px 18px;
+  padding: 10px 16px;
   border: none;
   border-radius: 10px;
   background-color: blue;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.clear-history {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(190, 8, 8);
   color: white;
   font-size: 1rem;
   cursor: pointer;
