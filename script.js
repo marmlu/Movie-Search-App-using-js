@@ -74,8 +74,9 @@ async function getMovieInfo(movieName) {
       }
       movieCache.set(movieName, movie.Search);
       message.textContent = `Found ${movie.Search.length} movies.`;
+    } else {
+      message.textContent = `Request failed. Status ${response.status}`;
     }
-
     if (!movieHistory.includes(movieName.toLowerCase())) {
       movieHistory.push(movieName.toLowerCase());
 
