@@ -17,6 +17,7 @@ searchForm.addEventListener("submit", function (event) {
   if (movieSearchBtn.disabled === true) {
     return;
   }
+  movieResult.innerHTML = "";
   if (searchInput.value.trim() === "") {
     message.textContent = "Please enter a movie title";
   } else {
@@ -43,6 +44,7 @@ async function getMovieInfo(movieName) {
         message.textContent = movie.Error;
         return;
       }
+
       for (let i = 0; i < movie.Search.length; i++) {
         const cardContainer = document.createElement("article");
         const posterMovie = document.createElement("img");
