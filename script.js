@@ -14,7 +14,9 @@ const movieCache = new Map();
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const storedMovie = searchInput.value.trim().toLowerCase();
-
+  if (movieSearchBtn.disabled === true) {
+    return;
+  }
   if (searchInput.value.trim() === "") {
     message.textContent = "Please enter a movie title";
   } else {
