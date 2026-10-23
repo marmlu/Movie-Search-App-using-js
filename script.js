@@ -74,14 +74,15 @@ async function getMovieInfo(movieName) {
       }
       movieCache.set(movieName, movie.Search);
       message.textContent = `Found ${movie.Search.length} movies.`;
+
+      if (!movieHistory.includes(movieName.toLowerCase())) {
+        movieHistory.push(movieName.toLowerCase());
+
+        localStorage.setItem("movieHistory", JSON.stringify(movieHistory));
+        displayMovieHistory();
+      }
     } else {
       message.textContent = `Request failed. Status ${response.status}`;
-    }
-    if (!movieHistory.includes(movieName.toLowerCase())) {
-      movieHistory.push(movieName.toLowerCase());
-
-      localStorage.setItem("movieHistory", JSON.stringify(movieHistory));
-      displayMovieHistory();
     }
   } catch {
     message.textContent = "Network failure";
@@ -95,11 +96,6 @@ function displayMovieHistory() {
     const movieNameButton = document.createElement("button");
     movieNameButton.textContent = movie;
     movieNameButton.classList.add("movie-search-btn");
-    movieNameButton.style.backgroundColor = "green";
-    movieNameButton.style.padding = "8px";
-    searchHistoryContainer.style.display = "flex";
-    searchHistoryContainer.style.gap = "10px";
-    searchHistoryContainer.style.marginTop = "10px";
     searchHistoryContainer.appendChild(movieNameButton);
     movieNameButton.addEventListener("click", function () {
       searchInput.value = movie;
