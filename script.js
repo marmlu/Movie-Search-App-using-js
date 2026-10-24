@@ -93,7 +93,7 @@ function fetchFromCache(targetedMovie) {
     displayMovieCards(cachedMovies);
   }
 }
-function displayMovieCards(movie.Search) {
+function displayMovieCards(movie) {
   movie.Search.forEach(function (movie) {
     const cardContainer = document.createElement("article");
     const posterMovie = document.createElement("img");
