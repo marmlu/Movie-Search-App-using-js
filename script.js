@@ -17,10 +17,11 @@ searchForm.addEventListener("submit", function (event) {
   if (movieSearchBtn.disabled === true) {
     return;
   }
-  movieResult.innerHTML = "";
+
   if (searchInput.value.trim() === "") {
     message.textContent = "Please enter a movie title";
   } else {
+    movieResult.innerHTML = "";
     message.textContent = "Searching for movies...";
     movieSearchBtn.disabled = true;
     if (!movieCache.has(storedMovie)) {
@@ -44,34 +45,7 @@ async function getMovieInfo(movieName) {
         message.textContent = movie.Error;
         return;
       }
-
-      for (let i = 0; i < movie.Search.length; i++) {
-        const cardContainer = document.createElement("article");
-        const posterMovie = document.createElement("img");
-        const nameMovie = document.createElement("h3");
-        const yearMovie = document.createElement("p");
-        nameMovie.textContent = movie.Search[i].Title;
-        posterMovie.addEventListener(
-          "error",
-          function () {
-            posterMovie.src = "https://placehold.co/300x450?text=No+Poster";
-          },
-          { once: true },
-        );
-        if (movie.Search[i].Poster === "N/A") {
-          posterMovie.src = "https://placehold.co/300x450?text=No+Poster";
-        } else {
-          posterMovie.src = movie.Search[i].Poster;
-        }
-        yearMovie.textContent = `Year: ${movie.Search[i].Year}`;
-        nameMovie.classList.add("card-info");
-        yearMovie.classList.add("card-info");
-        cardContainer.classList.add("card");
-        cardContainer.appendChild(posterMovie);
-        cardContainer.appendChild(nameMovie);
-        cardContainer.appendChild(yearMovie);
-        movieResult.appendChild(cardContainer);
-      }
+      displayMovieCards(movie.Search);
       movieCache.set(movieName, movie.Search);
       message.textContent = `Found ${movie.Search.length} movies.`;
 
@@ -116,23 +90,35 @@ function fetchFromCache(targetedMovie) {
   movieResult.innerHTML = "";
   if (movieCache.has(targetedMovie)) {
     const cachedMovies = movieCache.get(targetedMovie);
-    cachedMovies.forEach(function (cachedMovie) {
-      const cachedMovieName = document.createElement("h3");
-      cachedMovieName.textContent = cachedMovie.Title;
-      const cachedMovieYear = document.createElement("p");
-      cachedMovieYear.textContent = cachedMovie.Year;
-      const cachedMoviePoster = document.createElement("img");
-      if (cachedMovie.Poster === "N/A") {
-        cachedMoviePoster.src = "https://placehold.co/300x450?text=No+Poster";
-      } else {
-        cachedMoviePoster.src = cachedMovie.Poster;
-      }
-      const cachedMovieCard = document.createElement("div");
-      cachedMovieCard.appendChild(cachedMoviePoster);
-      cachedMovieCard.appendChild(cachedMovieName);
-      cachedMovieCard.appendChild(cachedMovieYear);
-      cachedMovieCard.classList.add("card");
-      movieResult.appendChild(cachedMovieCard);
-    });
+    displayMovieCards(cachedMovies);
   }
+}
+function displayMovieCards(movie.Search) {
+  movie.Search.forEach(function (movie) {
+    const cardContainer = document.createElement("article");
+    const posterMovie = document.createElement("img");
+    const nameMovie = document.createElement("h3");
+    const yearMovie = document.createElement("p");
+    nameMovie.textContent = movie.Title;
+    posterMovie.addEventListener(
+      "error",
+      function () {
+        posterMovie.src = "https://placehold.co/300x450?text=No+Poster";
+      },
+      { once: true },
+    );
+    if (movie.Poster === "N/A") {
+      posterMovie.src = "https://placehold.co/300x450?text=No+Poster";
+    } else {
+      posterMovie.src = movie.Poster;
+    }
+    yearMovie.textContent = `Year: ${movie.Year}`;
+    nameMovie.classList.add("card-info");
+    yearMovie.classList.add("card-info");
+    cardContainer.classList.add("card");
+    cardContainer.appendChild(posterMovie);
+    cardContainer.appendChild(nameMovie);
+    cardContainer.appendChild(yearMovie);
+    movieResult.appendChild(cardContainer);
+  });
 }
